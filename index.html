@@ -25,7 +25,8 @@
             <header>
                 <div class="header-branding">
                     <h1>Brand Invo</h1>
-                    class="live-dot" style="background: #22c55e;"></span>v1.1</span>
+                    <span class="beta-badge" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><span
+                            class="live-dot" style="background: #22c55e;"></span>v1.1</span>
                 </div>
                 <div class="header-actions">
                     <button type="button" id="toggleSettingsBtn" class="btn-icon" title="Settings"><i
@@ -125,6 +126,10 @@
                         <span class="icon-box"><i class="fas fa-file-pdf"></i></span>
                         <span class="btn-text">Download</span>
                     </button>
+                    <button type="button" id="printBtn" class="btn-action btn-print-trigger">
+                        <span class="icon-box"><i class="fas fa-print"></i></span>
+                        <span class="btn-text">Print</span>
+                    </button>
                     <button type="button" id="whatsappBtn" class="btn-action btn-whatsapp">
                         <span class="icon-box"><i class="fab fa-whatsapp"></i></span>
                         <span class="btn-text">Share via WhatsApp</span>
@@ -182,17 +187,7 @@
                         </p>
                     </div>
 
-                    <div class="form-group"
-                        style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-subtle);">
-                        <label>Feedback & Support</label>
-                        <p style="font-size:0.75rem; color:var(--text-dim); margin-bottom:10px;">
-                            Submit feedback or report issues via our Google Form.
-                        </p>
-                        <a href="https://forms.google.com" target="_blank" id="googleFormLink" class="btn-secondary"
-                            style="display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;">
-                            <i class="fas fa-file-alt"></i> Open Google Form
-                        </a>
-                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button id="saveSettingsBtn" class="btn-primary">Save Connection</button>
@@ -210,6 +205,7 @@
                 <input type="text" id="historySearch" placeholder="Search Client or ID..." class="history-search-input">
             </div>
             <div class="history-actions">
+
                 <button id="exportCsvBtn" class="btn-secondary btn-sm"
                     style="margin: 10px 0; width: 100%; border-color: var(--border-subtle); color: var(--text-dim);"><i
                         class="fas fa-file-csv"></i> Export to Excel/CSV</button>
@@ -221,6 +217,7 @@
                     <span class="stat-label">Total Revenue</span>
                     <h3 class="stat-value" id="totalRevenueDisplay">₹0.00</h3>
                 </div>
+
             </div>
 
             <div id="historyList" class="history-list">
