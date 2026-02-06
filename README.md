@@ -27,4 +27,4 @@ A modern, offline-first invoice generator built for **Brandlift**.
 -   **Restore**: Go to Settings -> Restore Data (Select your `.json` file).
 
 ---
-*Built for VBC VISSION*
+*Built for Aswin krishna*
