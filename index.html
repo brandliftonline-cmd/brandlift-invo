@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Invo</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%238b5cf6'/><stop offset='100%25' stop-color='%23db2777'/></linearGradient></defs><circle cx='50' cy='50' r='50' fill='url(%23g)'/><text x='50' y='50' font-family='Arial, sans-serif' font-weight='bold' font-size='60' fill='white' text-anchor='middle' dy='.35em'>B</text></svg>">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <link rel="stylesheet" href="style.css?v=1.1">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Editor Panel -->
+        <div class="editor-panel">
+            <header>
+                <div class="header-branding">
+                    <h1>Brand Invo</h1>
+                    class="live-dot" style="background: #22c55e;"></span>v1.1</span>
+                </div>
+                <div class="header-actions">
+                    <button type="button" id="toggleSettingsBtn" class="btn-icon" title="Settings"><i
+                            class="fas fa-cog"></i></button>
+                    <button type="button" id="toggleHistoryBtn" class="btn-icon" title="History"><i
+                            class="fas fa-history"></i></button>
+                </div>
+            </header>
+
+            <form id="invoiceForm">
+                <div class="form-section">
+                    <h3>Invoice Details</h3>
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label>Invoice No</label>
+                            <input type="text" id="invoiceId" placeholder="BL-2024-001">
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="invoiceDate">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Client Details</h3>
+                    <div class="form-group">
+                        <label>Client Name / Company</label>
+                        <input type="text" id="clientName" list="clientList" placeholder="e.g. Client Name ">
+                        <datalist id="clientList"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Address / Location</label>
+                        <input type="text" id="clientAddress" placeholder="e.g. 123 Street, City">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Line Items</h3>
+                    <div id="lineItemsContainer">
+                        <!-- Items will be added here via JS -->
+                    </div>
+                    <button type="button" id="addItemBtn" class="btn-secondary" style="margin-top: 10px;">+ Add
+                        Item</button>
+                </div>
+
+                <div class="form-section">
+                    <h3>Pricing & Taxes</h3>
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label>Tax Rate (%)</label>
+                            <input type="number" id="taxRate" placeholder="0" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Discount</label>
+                            <input type="number" id="discountVal" placeholder="0" value="0" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label>Currency</label>
+                            <input type="text" id="currencySymbol" value="₹">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="invoiceStatus">
+                                <option value="">None</option>
+                                <option value="PAID">PAID</option>
+                                <option value="PENDING">PENDING</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Payment Info (QR)</h3>
+                    <div class="form-group">
+                        <label>UPI ID (for auto QR)</label>
+                        <input type="text" id="upiId" placeholder="brandinvo@upi">
+                    </div>
+                    <div class="form-group">
+                        <label>Or Upload Custom QR</label>
+                        <input type="file" id="qrUpload" accept="image/*" style="font-size:0.8rem;">
+                    </div>
+                </div>
+
+                <div class="actions-grid">
+                    <button type="button" id="saveBtn" class="btn-action btn-save">
+                        <span class="icon-box"><i class="fas fa-cloud-upload-alt"></i></span>
+                        <span class="btn-text">Save</span>
+                    </button>
+                    <button type="button" id="newItemBtn" class="btn-action btn-new">
+                        <span class="icon-box"><i class="fas fa-plus"></i></span>
+                        <span class="btn-text">New</span>
+                    </button>
+                    <button type="button" id="downloadBtn" class="btn-action btn-download">
+                        <span class="icon-box"><i class="fas fa-file-pdf"></i></span>
+                        <span class="btn-text">Download</span>
+                    </button>
+                    <button type="button" id="whatsappBtn" class="btn-action btn-whatsapp">
+                        <span class="icon-box"><i class="fab fa-whatsapp"></i></span>
+                        <span class="btn-text">Share via WhatsApp</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings & Integrations</h2>
+                    <button id="closeSettingsBtn" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Google Sheet Web App URL</label>
+                        <input type="text" id="sheetUrl"
+                            value="https://script.google.com/macros/s/AKfycbz67cGHm-LB-jJssrD2YuROeYbdZ5XcY6oyFQwbJMviO3-vBajUAQPfSZd_UQHd-2I3tA/exec"
+                            style="width:100%;">
+                        <button id="testConnectionBtn" class="btn-sm" style="margin-top:5px; background:#e0e0e0;">Test
+                            Connection</button>
+                        <p style="font-size:0.75rem; color:var(--text-dim); margin-top:5px;">
+                            Paste your Google Apps Script Web App URL here to enable auto-sync.
+                            <a href="GOOGLE_SHEETS_SETUP.md" target="_blank" style="color:var(--primary-accent);">View
+                                Guide</a>
+                        </p>
+                        <form id="debugForm" method="POST" target="_blank" style="margin-top:10px;">
+                            <input type="hidden" name="id" value="DEBUG-TEST">
+                            <input type="hidden" name="clientName" value="Debug Client">
+                            <input type="hidden" name="amount" value="500">
+                            <input type="hidden" name="status" value="DEBUG">
+                            <input type="hidden" name="items" value="Deep Debug Check">
+                            <button type="submit" id="deepDebugBtn" class="btn-sm"
+                                style="background:#ffdddd; color:#d32f2f; border:1px solid #d32f2f;">
+                                <i class="fas fa-bug"></i> Deep Debug (Open in New Tab)
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="form-group"
+                        style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-subtle);">
+                        <label>Data Management</label>
+                        <div style="display:flex; gap:10px;">
+                            <button id="backupBtn" class="btn-secondary" style="flex:1;"><i class="fas fa-download"></i>
+                                Backup Data</button>
+                            <button id="restoreBtn" class="btn-secondary" style="flex:1;"
+                                onclick="document.getElementById('restoreInput').click()"><i class="fas fa-upload"></i>
+                                Restore Data</button>
+                            <input type="file" id="restoreInput" accept="application/json" style="display:none">
+                        </div>
+                        <p style="font-size:0.75rem; color:var(--text-dim); margin-top:5px;">
+                            Save your invoices to a file or load them back.
+                        </p>
+                    </div>
+
+                    <div class="form-group"
+                        style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-subtle);">
+                        <label>Feedback & Support</label>
+                        <p style="font-size:0.75rem; color:var(--text-dim); margin-bottom:10px;">
+                            Submit feedback or report issues via our Google Form.
+                        </p>
+                        <a href="https://forms.google.com" target="_blank" id="googleFormLink" class="btn-secondary"
+                            style="display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;">
+                            <i class="fas fa-file-alt"></i> Open Google Form
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveSettingsBtn" class="btn-primary">Save Connection</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Sidebar (Initially Hidden) -->
+        <div id="historySidebar" class="history-sidebar">
+            <div class="history-header">
+                <h2>Invoice History</h2>
+                <button id="closeHistoryBtn" class="close-btn">&times;</button>
+            </div>
+            <div class="history-search-container">
+                <input type="text" id="historySearch" placeholder="Search Client or ID..." class="history-search-input">
+            </div>
+            <div class="history-actions">
+                <button id="exportCsvBtn" class="btn-secondary btn-sm"
+                    style="margin: 10px 0; width: 100%; border-color: var(--border-subtle); color: var(--text-dim);"><i
+                        class="fas fa-file-csv"></i> Export to Excel/CSV</button>
+            </div>
+
+            <!-- Revenue Dashboard -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <span class="stat-label">Total Revenue</span>
+                    <h3 class="stat-value" id="totalRevenueDisplay">₹0.00</h3>
+                </div>
+            </div>
+
+            <div id="historyList" class="history-list">
+                <!-- History items will be populated here -->
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <div id="invoice" class="invoice-box">
+                <!-- Header: Logo Left, Title Right -->
+                <div class="invoice-header">
+                    <div class="brand">
+                        <label for="logoUpload" title="Click to change logo" style="cursor: pointer;">
+                            <img src="brandlift_logo.png" alt="Brand Invo" class="logo" id="brandLogo">
+                        </label>
+                        <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="invoice-title">
+                        <h1>INVOICE</h1>
+                        <p>Invoice ID: <span id="previewInvoiceId">BL-25-12-01</span></p>
+                    </div>
+                </div>
+
+                <!-- Date: Centered -->
+                <div class="invoice-meta-date">
+                    <p>Date : <span id="previewDate">16/12/2025</span></p>
+                </div>
+
+                <!-- Details Row: Client Left, Company Right -->
+                <div class="invoice-details-row">
+                    <div class="bill-to">
+                        <h3>INVOICE TO</h3>
+                        <h4 id="previewClientName">RAJ DAILY KITCHEN</h4>
+                        <p id="previewClientAddress" class="client-address-preview">Client Address</p>
+                    </div>
+
+                    <div class="company-address">
+                        <p>1st Floor KMK Tower</p>
+                        <p>Cheruthuruthy, Thrissur</p>
+                        <p>PH : +91 7902812336</p>
+                        <p>www.brandliftonline.com</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="invoice-table">
+                        <thead>
+                            <tr>
+                                <th class="text-left" style="width: 40%;">PRODUCT</th>
+                                <th class="text-center">PRICE</th>
+                                <th class="text-center">QTY</th>
+                                <th class="text-right">TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewItemsBody">
+                            <!-- Items will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Total Section: Right Aligned Black Bar -->
+                <!-- Summary Section -->
+                <div class="summary-container">
+                    <div class="summary-row" id="subtotalRow" style="display:none;">
+                        <span>Subtotal</span>
+                        <span id="previewSubtotal">0</span>
+                    </div>
+                    <div class="summary-row" id="taxRow" style="display:none;">
+                        <span>Tax (<span id="previewTaxRate">0</span>%)</span>
+                        <span id="previewTaxAmt">0</span>
+                    </div>
+                    <div class="summary-row" id="discountRow" style="display:none;">
+                        <span>Discount</span>
+                        <span id="previewDiscountAmt">0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>TOTAL</span>
+                        <span id="previewTotal">2700 Rs</span>
+                    </div>
+                </div>
+
+                <!-- Status Stamp -->
+                <div id="statusStamp" class="status-stamp hidden">PAID</div>
+
+                <!-- Footer: QR Left, Signature Right -->
+                <div class="invoice-footer">
+                    <div class="qr-section">
+                        <h4>PAYMENT METHOD</h4>
+                        <div id="qrcode"></div>
+                    </div>
+
+                    <div class="signature-section">
+                        <div class="line"></div>
+                        <p class="role">CEO</p>
+                        <p class="name">Aswin Krishna</p>
+                    </div>
+                </div>
+
+                <div class="thank-you">
+                    <p>Thank You For Your Business</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=1.1"></script>
+
+</body>

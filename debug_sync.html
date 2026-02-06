@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sync Debugger</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 40px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Google Sheet Connection Debugger</h1>
+    <p>This tool bypasses the app code to test the Google Script directly.</p>
+
+    <label>Result:</label>
+    <p>When you click "Send Test Data", a new page will open.
+        <br><strong>If you see "Success":</strong> The script is working, but maybe not writing?
+        <br><strong>If you see "Error":</strong> Google is blocking it (Permissions).
+        <br><strong>If you see "Script file not found":</strong> The URL is wrong.
+    </p>
+
+    <form id="debugForm" method="POST" target="_blank">
+        <label>Your Web App URL:</label>
+        <input type="text" name="url" id="urlInput"
+            value="https://script.google.com/macros/s/AKfycbz67cGHm-LB-jJssrD2YuROeYbdZ5XcY6oyFQwbJMviO3-vBajUAQPfSZd_UQHd-2I3tA/exec"
+            required>
+
+        <!-- Hidden Data Fields -->
+        <input type="hidden" name="date" value="2024-01-01">
+        <input type="hidden" name="id" value="DEBUG-TEST">
+        <input type="hidden" name="clientName" value="Debug Client">
+        <input type="hidden" name="amount" value="500">
+        <input type="hidden" name="status" value="DEBUG">
+        <input type="hidden" name="items" value="Debug Tool Check">
+
+        <button type="button" onclick="submitForm()">Send Test Data</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return alert("Paste URL first!");
+
+            const form = document.getElementById('debugForm');
+            form.action = url;
+            form.submit();
+        }
+    </script>
+</body>
+
+</html>
